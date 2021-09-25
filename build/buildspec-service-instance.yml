@@ -1,0 +1,62 @@
+version: 0.2
+
+env:
+  shell: bash
+  git-credential-helper: yes
+  variables:
+    MAJOR_VERSION: 0
+    MINOR_VERSION: 0
+    Service: ${Service}
+    ENVIRONMENT: ${ENVIRONMENT}
+    VERSION: ${VERSION}
+    DEFAULT_BRANCH: ${DEFAULT_BRANCH}
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - echo [CONFIGURE] - git..
+      - git config --global user.email "b@someone.com"
+      - git config --global user.name "SDLC Auto Version via Code Build"
+
+      - echo [INSTALL] - build tools
+      - aws s3 sync s3://stokedconsulting.com-sdlc-artifacts/sdlc/ ./build-repo > /dev/null 2>&1
+      - chmod -R +x ./build-repo
+
+      - echo [CONFIGURE] - build tools
+      - cd build-repo && source env_vars.sh
+      - source ./display_vars.sh
+
+      - echo [Service] - build tools
+      - source ./service.sh
+
+      - echo [VALIDATE BUILD] - build tools
+      - source ./validate.sh
+
+      - echo [INSTALL] - "${Service}"
+      - npm i json -g
+
+      - echo [VERSIONING] - build tools
+      - source ./version-generate.sh
+
+      - echo [INSTALL] - packer setup
+      - APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=true > /dev/null 2>&1
+      - curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - > /dev/null 2>&1
+      - echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+      - apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" > /dev/null 2>&1
+      - apt-get update > /dev/null 2>&1 && apt-get install packer > /dev/null 2>&1
+
+  build:
+    on-failure: ABORT
+    commands:
+      - echo [BUILD] - "${Service}"
+      - bash ./build-instance.sh
+
+      - export BUILD_SUCCESS=true
+
+  post_build:
+    commands:
+      - echo [FINALIZE] - "${Service}"
+      - source ./version-finalize.sh

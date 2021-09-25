@@ -1,0 +1,21 @@
+{
+
+  "conwell": {
+    "type": "typescript"
+  },
+  "meitner": {
+      "type": "node"
+  },
+  "curie": {
+    "type": "node"
+  },
+  "burnell": {
+    "type": "node"
+  },
+  "resnik": {
+    "type": "next"
+  },
+  "devops": {
+    "type": "artifacts"
+  }
+}

@@ -1,0 +1,55 @@
+version: 0.2
+
+env:
+  shell: bash
+  git-credential-helper: yes
+  variables:
+    MAJOR_VERSION: 0
+    MINOR_VERSION: 0
+    Service: ${Service}
+    ENVIRONMENT: ${ENVIRONMENT}
+    VERSION: ${VERSION}
+    DEFAULT_BRANCH: ${DEFAULT_BRANCH}
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - "echo [CONFIGURE] - git.."
+      - "git config --global user.email \"ops@energycurb.com\""
+      - "git config --global user.name \"Energy Curb Ops - Code Build\""
+
+      - "aws sts get-caller-identity --output text"
+      - "echo [INSTALL] - build tools"
+      - "aws s3 sync s3://stokedconsulting.com-sdlc-artifacts/sdlc/ ./build-repo > /dev/null 2>&1"
+      - "ls -la"
+      - "chmod -R +x ./build-repo"
+
+      - "cd build-repo"
+      - "./clean_get_refs.sh"
+
+      - "echo [CONFIGURE] - build tools"
+      - "source env_vars.sh"
+
+      - "echo [VALIDATE] - build tools"
+      - "source ./validate.sh"
+
+      - "echo [INSTALL] - ${Service}"
+      - "npm i json -g"
+
+      - "echo [VERSIONING] - build tools"
+      - "source ./version-generate.sh"
+
+  build:
+    on-failure: ABORT
+    commands:
+      - "echo [BUILD] - ${Service}"
+      - "bash ./build-artifacts.sh"
+
+  post_build:
+    on-failure: ABORT
+    commands:
+      - "echo [FINALIZE] - ${Service}"
+      - "source ./version-finalize.sh"

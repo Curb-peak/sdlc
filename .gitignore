@@ -1,0 +1,4 @@
+.terraform*
+.idea/*
+*.service
+.DS_store*
