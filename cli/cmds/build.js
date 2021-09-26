@@ -8,7 +8,7 @@ function func(environment, service) {
   const command = 'aws';
   const arguments = ['codebuild', 'start-build', '--project-name', `${service}-cb`, '--environment-variables-override', 'name=ENVIRONMENT,value=' + environment, '--profile'];
 
-  const build = spawn(command, arguments.concat(['peak']));
+  const build = spawn(command, arguments.concat(['sdlc']));
 
   build.stdout.on('data', (data) => {
     console.logHeading(`The ${service} build started. If it completes successfully it will be auto-deployed to the ${environment} environment.`)
@@ -51,8 +51,8 @@ module.exports = function (program) {
     })
     .addHelpText('after', `
       Examples:
-        $ peak build -e dev -- conwell
-        $ peak build -e dev staging -- curie
-        $ peak build -e all -- meitner`
+        $ sdlc build -e dev -- conwell
+        $ sdlc build -e dev staging -- curie
+        $ sdlc build -e all -- meitner`
     );
 }

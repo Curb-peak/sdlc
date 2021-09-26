@@ -16,7 +16,7 @@ features
 
 
 d98d52d74e9cb5ea9cf75dfedefc3db2d4e41555 (HEAD -> devopsV2, origin/devopsV2) [DEV] bump
-fdac92af9c548cefd9fa25d630468ae94c68b6b8 Merge branch 'devopsV2' of https://github.com/Curb-peak/devops into devopsV2
+fdac92af9c548cefd9fa25d630468ae94c68b6b8 Merge branch 'devopsV2' of https://github.com/Curb-sdlc/devops into devopsV2
 8d0cab9658b0ccbae79d82751ba299ed76e5a60a switched dev env to use the correct acm
 13687ace8e8de451fb6b4ccd0273b12aaf0a604b funcitonal first pass on configuration management.. do not need to maintain separate versions of baked amis for each service | version pair
 e0097ed124c18636ba660d7a6a1afe786cf9fb3b removed extraneous files

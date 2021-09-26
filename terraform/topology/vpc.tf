@@ -9,7 +9,7 @@ module "vpc" {
   name = "${var.env}-vpc"
   cidr = var.vpc["cidr"]
 
-  azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  azs             = ["us-east-1a", "us-east-1b", "us-east-1c"]
   private_subnets = [var.vpc["cidr_block_a"], var.vpc["cidr_block_b"], var.vpc["cidr_block_c"]]
   public_subnets  = [var.vpc["public_block_a"], var.vpc["public_block_b"], var.vpc["public_block_c"]]
 

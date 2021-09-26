@@ -23,12 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Curb-peak/devops.git"
+    "url": "git+https://github.com/stokedconsulting/sdlc.git"
   },
   "bugs": {
-    "url": "https://github.com/Curb-peak/devops/issues"
+    "url": "https://github.com/stokedconsulting/sdlc/issues"
   },
-  "homepage": "https://github.com/Curb-peak/devops#readme",
+  "homepage": "https://github.com/stokedconsulting/sdlc#readme",
   "devDependencies": {
     "eslint": "^7.32.0",
     "tslint": "^6.1.3"
