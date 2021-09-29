@@ -2,3 +2,4 @@
 .idea/*
 *.service
 .DS_store*
+*.backup
